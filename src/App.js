@@ -13,15 +13,15 @@ function App() {
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
 
     try {
       const response = await axios.get(
         `http://hn.algolia.com/api/v1/search_by_date?query=${query}&tags=story`
       );
-      console.log(response.data);
       setResults(response.data.hits);
     } catch (error) {
-      setError(error);
+      setError(error.message);
     }
     
     setLoading(false);
@@ -52,17 +52,18 @@ function App() {
 
       {loading ? (
         <div>Loading...</div>
-      ) : (
-        <ul>
-          {results.map(result => (
-            <li key={result.objectID}>
-              <a href={result.url}>{result.title}</a>
-            </li>
-          ))}
-        </ul>
+      ) : (error ? (
+        <div>{error}</div>
+        ) : (
+          <ul>
+            {results.map(result => (
+              <li key={result.objectID}>
+                <a href={result.url}>{result.title}</a>
+              </li>
+            ))}
+          </ul>
+        )
       )}
-
-      {error && <div>{error.message}</div>}
     </div>
   );
 }

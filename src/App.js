@@ -4,15 +4,27 @@ import axios from 'axios';
 function App() {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("react hooks");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const searchInputRef = useRef();
   
   useEffect(() => loadData(), []);
 
   const loadData = async () => {
-    const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search_by_date?query=${query}&tags=story`
-    );
-    setResults(response.data.hits);
+    setLoading(true);
+
+    try {
+      const response = await axios.get(
+        `http://hn.algolia.com/api/v1/search_by_date?query=${query}&tags=story`
+      );
+      console.log(response.data);
+      setResults(response.data.hits);
+    } catch (error) {
+      setError(error);
+    }
+    
+    setLoading(false);
   }
 
   const handleSearch = event => {
@@ -37,13 +49,20 @@ function App() {
         <button type="submit">Search</button>
         <button type="button" onClick={handleClearSearch}>Clear</button>
       </form>
-      <ul>
-        {results.map(result => (
-          <li key={result.objectID}>
-            <a href={result.url}>{result.title}</a>
-          </li>
-        ))}
-      </ul>
+
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <ul>
+          {results.map(result => (
+            <li key={result.objectID}>
+              <a href={result.url}>{result.title}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {error && <div>{error.message}</div>}
     </div>
   );
 }

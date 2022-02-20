@@ -1,6 +1,6 @@
 # hacker-news-search-app
 
-A simple SPA app to search articles made with React (React Hooks) that uses [Hacker News api](https://hn.algolia.com/api).
+A single page application (SPA) to search articles made with React (React Hooks) that uses [Hacker News api](https://hn.algolia.com/api). Styles made with [tailwind css](https://tailwindcss.com/) framework (used cdn minified file).
 
 ### Additional info:
 

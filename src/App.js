@@ -17,7 +17,7 @@ function App() {
 
     try {
       const response = await axios.get(
-        `http://hn.algolia.com/api/v1/search_by_date?query=${query}&tags=story`
+        `https://hn.algolia.com/api/v1/search_by_date?query=${query}&tags=story`
       );
       setResults(response.data.hits);
     } catch (error) {
